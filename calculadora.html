@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Temperaturas - Smart Room</title>
+    <link rel="stylesheet" href="css/iroom.css">
+        
+</head>
+<body>
+    <div id="contenedor">
+        <div id="titulo">
+            <h1> Calculadora de Temperaturas</h1>
+        </div>
+
+        <div class="calculadora-container">
+            <input type="text" id="pantalla" readonly value="0">
+            
+            <div class="botonera">
+                <button class="boton-calc" onclick="limpiar()">C</button>
+                <button class="boton-calc" onclick="borrarUltimo()">⌫</button>
+                <button class="boton-calc operador" onclick="agregarOperador('/')">/</button>
+                <button class="boton-calc operador" onclick="agregarOperador('*')">×</button>
+                
+                <button class="boton-calc numero" onclick="agregarNumero('7')">7</button>
+                <button class="boton-calc numero" onclick="agregarNumero('8')">8</button>
+                <button class="boton-calc numero" onclick="agregarNumero('9')">9</button>
+                <button class="boton-calc operador" onclick="agregarOperador('-')">-</button>
+                
+                <button class="boton-calc numero" onclick="agregarNumero('4')">4</button>
+                <button class="boton-calc numero" onclick="agregarNumero('5')">5</button>
+                <button class="boton-calc numero" onclick="agregarNumero('6')">6</button>
+                <button class="boton-calc operador" onclick="agregarOperador('+')">+</button>
+                
+                <button class="boton-calc numero" onclick="agregarNumero('1')">1</button>
+                <button class="boton-calc numero" onclick="agregarNumero('2')">2</button>
+                <button class="boton-calc numero" onclick="agregarNumero('3')">3</button>
+                
+                <button class="boton-calc numero" onclick="agregarNumero('0')" style="grid-column: span 2;">0</button>
+                <button class="boton-calc" onclick="agregarDecimal()">.</button>
+                <button class="boton-calc igual" onclick="calcular()">=</button>
+            </div>
+
+            <div class="conversor">
+                <h3>Conversor de Temperaturas</h3>
+                <div>Valor actual: <span id="valor-actual">0</span>°C</div>
+                <div style="margin: 10px 0;">
+                    <button onclick="convertirTemperatura('f')">°Fahrenheit</button>
+                    <button onclick="convertirTemperatura('k')">Kelvin</button>
+                    <button onclick="convertirTemperatura('c')">°Celsius</button>
+                </div>
+                <div>Resultado: <span id="resultado-conversion">-</span></div>
+            </div>
+        </div>
+
+        <div id="pie">
+            <a href="index.html"> Página principal </a>
+        </div>
+    </div>
+              
+    <script src="js/validaciones.js"></script>
+</body>
+</html>
+        

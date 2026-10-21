@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar Nombre - Smart Room</title>
+    <link rel="stylesheet" href="css/iroom.css">
+</head>
+<body>
+
+    <input type="checkbox" id="modo-accesible" class="modo-toggle">
+    <label for="modo-accesible" class="boton-modo" title="Activar o desactivar modo accesible">
+         Modo accesible
+    </label>
+    <button type="button" id="boton-leer" class="boton-leer" aria-label="Leer el contenido de la página en voz alta" onclick="alternarLecturaPagina()">
+         🔊 Leer página
+    </button>
+    <div id="contenedor">
+
+        <header id="titulo">
+            <h1>Configurar Nombre</h1>
+        </header>
+
+        <div id="formulario-nombre" style="padding: 20px;">
+            <form onsubmit="guardarNombre(event)">
+                <label for="fname">Nombre:</label>
+                <input type="text" id="fname" name="fname" required
+                       placeholder="Escribe tu nombre">
+        
+                <label for="email">Correo electrónico:</label>
+                <input type="text" id="email" name="email"
+                       placeholder="usuario@dominio.com">
+                
+                <div class="botones">
+                    <button type="submit"> Guardar Nombre</button>
+                </div>
+            </from>
+
+                  
+         
+
+            <div class="botones" style="margin-top: 15px;">
+                <button type="button" onclick="validarEmailCadena()"style="margin-right: 10px; background-color: #e67e22">
+                        :) Validar (Método Cadena)
+                </button>
+                <button type="button" onclick="validarEmailRegex()" style="background-color: #9b59b6; ">
+                        :) Validar (Método Regex)
+               
+                </button>
+            </div>
+
+                
+            <div id="resultado-email" role="status" aria-live="polite"
+                 style="margin-top: 20px; padding: 10px; font-weight: bold; text-align: center; border-radius: 8px;">
+            </div>
+            
+        </div>
+
+        <footer id="pie">
+            <a href="index.html">Volver a Principal</a>
+            <p>Universidad de Alcalá</p>
+        </footer>
+    </div>
+
+    <script>
+        function guardarNombre(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('fname').value.trim();
+            if (nombre) {
+                localStorage.setItem('fname', nombre);
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
+    <script src="js/validaciones.js"></script>
+   
+    <script src="js/lector.js"></script>
+</body>
+</html>

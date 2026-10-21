@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Room Project</title>
+    <link rel="stylesheet" href="css/iroom.css">
+</head>
+<body>
+    <input type="checkbox" id="modo-accesible" class="modo-toggle">
+    <label for="modo-accesible" class="boton-modo" title="Activar o desactivar modo accesible de alto contraste">
+         Modo accesible
+    </label>    <input type="checkbox" id="toggle-fondo" class="toggle-fondo" checked>
+    <button type="button" id="boton-leer" class="boton-leer" aria-label="Leer el contenido de la página en voz alta"  onclick="alternarLecturaPagina()">
+         🔊 Leer página
+    </button>                                       
+
+    <div id="contenedor">
+        
+        <header id="titulo">
+            <h1>Smart Room Project</h1>
+        </header>
+        <nav id="menu" aria-label="Menú principal">
+            <a href="config.html"> configuración</a>
+            <a href="minombre.html">Nombre</a>
+            <a href="calculadora.html">calculadora</a>
+        </nav>
+
+        <aside id="informacion" role="status" aria-live="polite">
+       
+        </aside>
+
+        
+        <main class="contenedor-columnas">
+
+            <section class="columna columna-datos" aria-labelledby="titulo-habitacion">
+                <h2 id="titulo-habitacion">Datos de la Habitación</h2>
+                <div class="contenido-datos">
+                    <ul>
+                        <li> Ubicación: Edificio Politécnica</li>
+                        <li>Capacidad: 4 personas</li>
+                        <li> Tamaño: 20 m²</li>
+                    </ul>
+                    <a href="https://maps.google.com/?q=Universidad+Alcala"
+                       target="_blank" rel="noopener">
+                        verr en Google Maps
+                    </a>
+                    <img src="images/fondo-habitacion.jpg"
+                         alt="Habitación inteligente con sensores de temperatura y humedad"
+                         width="200">
+                </div>
+            </section>
+
+            <section class="columna columna-sensores" aria-labelledby="titulo-sensores">
+                <h2 id="titulo-sensores">Datos de Sensores</h2>
+                <div class="contenido-sensores">
+                    <table>
+                        <caption>Valores actuales de los sensores</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Sensor</th>
+                                <th scope="col">Valor</th>
+                                <th scope="col">Unidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> Temperatura</td>
+                                <td>22.5</td>
+                                <td>°C</td>
+                            </tr>
+                            <tr>
+                                <td> Humedad</td>
+                                <td>45</td>
+                                <td>%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <footer id="pie">
+            <p>Universidad de Alcalá</p>
+        </footer>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. Leer nombre
+        const nombre = localStorage.getItem('fname');
+        const info = document.getElementById('informacion');
+        if (nombre && info) {
+            info.textContent = 'Hola ' + nombre + ': Bienvenido a Smart Room';
+        }
+
+        // 2. Leer configuración guardada
+        const pais = localStorage.getItem('sm_pais');
+        if (!pais) return; // Si no hay configuración guardada, no hacemos nada
+
+        const ciudad = localStorage.getItem('sm_ciudad');
+        const localizacion = localStorage.getItem('sm_localizacion');
+        const mapa = localStorage.getItem('sm_mapa');
+        const sensoresCadena = localStorage.getItem('sm_sensores');
+        const tempValidas = localStorage.getItem('sm_temperaturasValidas');
+
+        // Formatear sensores
+        let sensoresTexto = 'ninguno';
+        if (sensoresCadena && sensoresCadena !== '') {
+            sensoresTexto = sensoresCadena.split(',').join(', ');
+        }
+
+        // Formatear temperaturas
+        let textoTemperaturas = '';
+        if (tempValidas === 'true') {
+            const max = localStorage.getItem('sm_tempMax');
+            const min = localStorage.getItem('sm_tempMin');
+            const dif = localStorage.getItem('sm_diferencia');
+            textoTemperaturas = '<li> Rango de temperatura: ' + min + ' °C – ' + max + ' °C (diferencia: ' + dif + ' °C)</li>';
+        } else {
+            textoTemperaturas = '<li> Rango de temperatura: <em>no configurado (datos incompletos o inconsistentes)</em></li>';
+        }
+
+        // Actualizar el bloque de datos de la habitación
+        const datosHabitacion = document.querySelector('.contenido-datos');
+        if (datosHabitacion && ciudad) {
+            datosHabitacion.innerHTML = `
+                <ul>
+                    <li>📍 Ubicación: ${ciudad}, ${pais}</li>
+                    <li> Coordenadas: ${localizacion}</li>
+                    <li> Sensores activos: ${sensoresTexto}</li>
+                    ${textoTemperaturas}
+                </ul>
+                <a href="${mapa}" target="_blank" rel="noopener">🗺️ Ver en Google Maps</a>
+                <img src="images/fondo-habitacion.jpg" alt="Habitación inteligente con sensores" width="200">
+            `;
+        }
+    });
+    </script>
+    <script src="js/lector.js"></script>
+</body>
+</html>
+

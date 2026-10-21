@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de la habitación - Smart Room</title>
+    <link rel="stylesheet" href="css/iroom.css">
+</head>
+<body>
+
+    <input type="checkbox" id="modo-accesible" class="modo-toggle">
+    <label for="modo-accesible" class="boton-modo" title="Activar o desactivar modo accesible">
+        Modo accesible
+    </label>
+    <button type="button" id="boton-leer" class="boton-leer" aria-label="Leer el contenido de la página en voz alta"  onclick="alternarLecturaPagina()">
+           🔊 Leer página
+    </button>
+
+    <div id="contenedor">
+
+        <header id="titulo-config">
+            <h1>Configuración de la habitación</h1>
+        </header>
+
+        <form id="form-config" onsubmit="return validarFormulario(event)" novalidate>
+
+            <div id="configuracion">
+
+                <section class="columna-izq" aria-labelledby="titulo-datos">
+                    <h2 id="titulo-datos"> Datos de la habitación</h2>
+
+                 
+                    <label for="pais"> País (obligatorio):</label>
+                    <div class="grupo-dictado">
+                        <input type="text" list="paises" id="pais" name="pais"
+                               onfocus="leerAyuda('Por favor, introduzce, selecciona o di usando el micrófono el pais')"
+                                aria-describedby="ayuda-pais" aria-required="true" required>
+                        <button type="button" class="btn-dictar" onclick="dictarEnCampo('pais')" aria-label="Dictar país por voz">🎙️</button>
+                    </div>
+                    <datalist id="paises">
+                        <option value="España">
+                        <option value="Francia">
+                        <option value="Italia">
+                        <option value="Alemania">
+                        <option value="Portugal">
+                    </datalist>
+
+                    
+                    <label for="ciudad">Ciudad:</label>
+                    <div class="grupo-dictado">
+                        <input type="text" id="ciudad" name="ciudad" onfocus="leerAyuda('di el nombre de la ciudad o escríbela')"
+                            aria-describedby="ayuda-ciudad" aria-required="true" required>
+                        <button type="button" class="btn-dictar" onclick="dictarEnCampo('ciudad')" aria-label="Dictar ciudad por voz">🎙️</button>
+                    </div>
+
+                    
+                    <label for="localizacion"> Coordenadas GPS:</label>
+                    <div class="grupo-dictado">
+                        <input type="text" id="localizacion" name="localizacion"
+                               placeholder="Ej: 40.4818, -3.3643 o 40°30′45″N, 3°20′54″O"
+                               aria-describedby="ayuda-coordenadas">
+                        <button type="button" class="btn-dictar" onclick="dictarEnCampo('localizacion')" aria-label="Dictar coordenadas por voz">🎙️</button>
+                    </div>
+                    
+                    <button type="button" onclick="generarEnlaceMaps()" aria-label="Generar enlace a Google Maps desde las coordenadas introducidas">
+                           Generar enlace Google Maps
+                    </button>
+                    <label for="mapa">Enlace Mapa Google:</label>
+                    <input type="url" id="mapa" name="mapa"
+                           placeholder="https://maps.google.com/..." readonly
+                           aria-live="polite">
+
+                    <label for="foto"> Foto de la habitación:</label>
+                    <input type="file" id="foto" name="foto" accept="image/*">
+
+                    
+                    <label for="password"> Password (mínimo 9 caracteres):</label>
+                    <div class="grupo-dictado">
+                        <!--<input type="password" id="password" name="password"
+                               onkeyup="actualizarIndicadorPassword(this.value)"
+                               aria-describedby="indicador-password" aria-required="true" required>-->
+                        <input type="password" id="password" name="password"
+                              onfocus="leerAyuda('Escriba su contraseña. Debe tener al menos 9 caracteres')"
+                               onkeyup="actualizarIndicadorPassword(this.value)"
+                               aria-describedby="indicador-password" aria-required="true" required>
+                        <button type="button" class="btn-dictar" onclick="dictarEnCampo('password')" aria-label="Dictar contraseña por voz">🎙️</button>
+                    </div>
+                    <output id="indicador-password" class="indicador-password"
+                            role="status" aria-live="polite"></output>
+                    <button type="submit">Guardar datos</button>
+                </section>
+
+               
+                <section class="columna-der" aria-labelledby="titulo-sensores">
+                    <h2 id="titulo-sensores"> Seleccione los sensores</h2>
+
+                    <fieldset>
+                        <legend>Sensores disponibles</legend>
+                        <label><input type="checkbox" name="sensores" value="temperatura"> Temperatura</label>
+                        <label><input type="checkbox" name="sensores" value="humedad">  Humedad</label>
+                        <label><input type="checkbox" name="sensores" value="sonido">  Nivel de sonido</label>
+                        <label><input type="checkbox" name="sensores" value="luz">  Nivel de luz</label>
+                        <label><input type="checkbox" name="sensores" value="movimiento">  Movimiento</label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend> Configure alertas</legend>
+
+                        
+                        <label for="temp-max">Temperatura máxima (°C):</label>
+                        <div class="grupo-dictado">
+                            <input type="number" id="temp-max" name="temp-max"
+                                   min="-20" max="45" step="0.5" value="30"
+                                   onchange="actualizarDiferencia()">
+                            <button type="button" class="btn-dictar" onclick="dictarEnCampo('temp-max')" aria-label="Dictar temperatura máxima por voz">🎙️</button>
+                        </div>
+
+                       
+                        <label for="temp-min">Temperatura mínima (°C):</label>
+                        <div class="grupo-dictado">
+                            <input type="number" id="temp-min" name="temp-min"
+                                   min="-20" max="45" step="0.5" value="15"
+                                   onchange="actualizarDiferencia()">
+                            <button type="button" class="btn-dictar" onclick="dictarEnCampo('temp-min')" aria-label="Dictar temperatura mínima por voz">🎙️</button>
+                        </div>
+
+                        <label for="diferencia">Diferencia (°C):</label>
+                        <output id="diferencia" for="temp-max temp-min">15.0</output>
+                    </fieldset>
+                </section>
+
+
+            </div>
+
+            <footer id="pie-config">
+                <a href="index.html" class="boton-volver"> Volver a Principal</a>
+                <p>Universidad de Alcalá</p>
+            </footer>
+
+        </form>
+
+    </div>
+
+    <!-- Ventana modal ACCESIBLE -->
+    <div id="modal" class="modal" role="alertdialog" aria-modal="true"
+         aria-labelledby="modal-titulo" aria-describedby="modal-mensaje">
+        <div class="modal-contenido" role="document">
+            <h2 id="modal-titulo">Aviso</h2>
+            <p id="modal-mensaje"></p>
+            <button type="button" id="modal-boton" onclick="cerrarModal()" autofocus>
+                Aceptar
+            </button>
+        </div>
+    </div>
+
+    <script src="js/validaciones.js"></script>
+    <script src="js/dictado.js"></script>
+    <script src="js/lector.js"></script>
+</body>
+</html>
